@@ -5,12 +5,16 @@ Public Class Form1
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Text = TextBoxIs.Text
         Text = LCase(Text)
-        Text = Text.Replace("pi", CStr(Math.PI))
-        Text = Text.Replace("e", CStr(Math.E))
         For i As Integer = 0 To 9
             Text = Text.Replace(CStr(i) + "(", CStr(i) + "*(")
             Text = Text.Replace(")" + CStr(i), CStr(i) + ")*")
+            Text = Text.Replace(CStr(i) + "pi", CStr(i) + "*pi")
+            Text = Text.Replace("pi" + CStr(i), CStr(i) + "pi*")
+            Text = Text.Replace(CStr(i) + "e", CStr(i) + "*e")
+            Text = Text.Replace("e" + CStr(i), CStr(i) + "e*")
         Next
+        Text = Text.Replace("pi", CStr(Math.PI).Replace(",", "."))
+        Text = Text.Replace("e", CStr(Math.E).Replace(",", "."))
         Text = Text.Replace(")(", ")*(")
         Text = Text.Replace(" ", "")
         Text = Calculate(Text)
@@ -100,7 +104,7 @@ Public Class Form1
                     End Select
                 End If
             End If
-            s2 = CStr(c1d)
+            s2 = CStr(c1d).Replace(",", ".")
             s3 = str.Substring(start + count, Len(str) - (start + count))
             str = s1 + s2 + s3
             i = 0
@@ -137,7 +141,7 @@ Public Class Form1
             c1d = Convert.ToDouble(c1.Replace(".", ","))
             itog = c1d ^ c2d
             s1 = str.Substring(0, start - count)
-            s2 = CStr(itog)
+            s2 = CStr(itog).Replace(",", ".")
             s3 = str.Substring(start, Len(str) - start)
             str = s1 + s2 + s3
             c2 = ""
@@ -186,7 +190,7 @@ Public Class Form1
                     itog = c1d / c2d
             End Select
             s1 = str.Substring(0, start)
-            s2 = CStr(itog)
+            s2 = CStr(itog).Replace(",", ".")
             s3 = str.Substring(start + count, Len(str) - (start + count))
             str = s1 + s2 + s3
             c1 = ""
@@ -238,7 +242,7 @@ Public Class Form1
                     itog = c1d - c2d
             End Select
             s1 = str.Substring(0, start)
-            s2 = CStr(itog)
+            s2 = CStr(itog).Replace(",", ".")
             s3 = str.Substring(start + count, Len(str) - (start + count))
             str = s1 + s2 + s3
             c1 = ""
