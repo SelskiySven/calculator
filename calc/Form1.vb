@@ -104,10 +104,12 @@ Public Class Form1
                     End Select
                 End If
             End If
-            s2 = CStr(c1d).Replace(",", ".")
+            s2 = CStr(c1d).Replace(".", ",")
             s3 = str.Substring(start + count, Len(str) - (start + count))
             str = s1 + s2 + s3
             i = 0
+            c1 = ""
+            c2 = ""
         End While
 
         While str.Contains("^")
@@ -115,13 +117,13 @@ Public Class Form1
             start = Len(str)
             count = 0
             While i >= 0
-                If IsNumeric(str(i)) Or str(i) = "." Then
+                If IsNumeric(str(i)) Or str(i) = "," Then
                     c2 = str(i) + c2
                     count += 1
                 ElseIf str(i) = "^" Then
                     j = i - 1
                     count += 1
-                    While IsNumeric(str(j)) Or str(j) = "."
+                    While IsNumeric(str(j)) Or str(j) = ","
                         c1 = str(j) + c1
                         count += 1
                         j -= 1
@@ -141,7 +143,7 @@ Public Class Form1
             c1d = Convert.ToDouble(c1.Replace(".", ","))
             itog = c1d ^ c2d
             s1 = str.Substring(0, start - count)
-            s2 = CStr(itog).Replace(",", ".")
+            s2 = CStr(itog).Replace(".", ",")
             s3 = str.Substring(start, Len(str) - start)
             str = s1 + s2 + s3
             c2 = ""
@@ -153,7 +155,7 @@ Public Class Form1
             start = 0
             count = 0
             While i < Len(str)
-                If IsNumeric(str(i)) Or str(i) = "." Then
+                If IsNumeric(str(i)) Or str(i) = "," Then
                     c1 = c1 + str(i)
                     count += 1
                 ElseIf (str(i) = "*" Or str(i) = "/") And i <> 0 Then
@@ -165,7 +167,7 @@ Public Class Form1
                         count += 1
                         start -= 1
                     End If
-                    While IsNumeric(str(j)) Or str(j) = "."
+                    While IsNumeric(str(j)) Or str(j) = ","
                         c2 = c2 + str(j)
                         count += 1
                         j += 1
@@ -190,7 +192,7 @@ Public Class Form1
                     itog = c1d / c2d
             End Select
             s1 = str.Substring(0, start)
-            s2 = CStr(itog).Replace(",", ".")
+            s2 = CStr(itog).Replace(".", ",")
             s3 = str.Substring(start + count, Len(str) - (start + count))
             str = s1 + s2 + s3
             c1 = ""
@@ -205,7 +207,7 @@ Public Class Form1
             start = 0
             count = 0
             While i < Len(str)
-                If IsNumeric(str(i)) Or str(i) = "." Then
+                If IsNumeric(str(i)) Or str(i) = "," Then
                     c1 = c1 + str(i)
                     count += 1
                 ElseIf (str(i) = "+" Or str(i) = "-") And i <> 0 Then
@@ -217,7 +219,7 @@ Public Class Form1
                         count += 1
                         start -= 1
                     End If
-                    While IsNumeric(str(j)) Or str(j) = "."
+                    While IsNumeric(str(j)) Or str(j) = ","
                         c2 = c2 + str(j)
                         count += 1
                         j += 1
@@ -242,7 +244,7 @@ Public Class Form1
                     itog = c1d - c2d
             End Select
             s1 = str.Substring(0, start)
-            s2 = CStr(itog).Replace(",", ".")
+            s2 = CStr(itog).Replace(".", ",")
             s3 = str.Substring(start + count, Len(str) - (start + count))
             str = s1 + s2 + s3
             c1 = ""
