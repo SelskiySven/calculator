@@ -32,7 +32,7 @@
                 GeneralText += vbCrLf + elem
             Next
             TextBoxIs.Text = GeneralText
-            TextBoxIs.SelectionStart = Position + 1
+            TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 1)
         End If
     End Sub
     Function Calculate(str As String)
