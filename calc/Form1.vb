@@ -1,52 +1,86 @@
-﻿Imports System.IO
+﻿Imports System.ComponentModel
+Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
 
 Public Class Form1
     Public OpenedFile As String = ""
+    Public LastText As String = ""
+    Public LastPosition As Integer = 0
+    Public LastOperatopnIsUndo As Boolean = False
+    Public CanMissText As Boolean = False
+    Public Class UndoItem
+        Public Property Start As Integer = 0
+        Public Property NewEnd As Integer = 0
+        Public Property OldEnd As Integer = 0
+        Public Property OldDiff As String = ""
+        Public Property NewDiff As String = ""
+        Public Property Position As Integer = 0
+    End Class
+
+    Public UndoArray As New Stack
+    Public RedoArray As New Stack
+
+    Public Class LastSave
+        Public Property Text As String = ""
+        Public Property UndoCount As Integer = 0
+    End Class
+
+    Function MakeSaveData()
+        LastSaved.Text = TextBoxIs.Text
+        LastSaved.UndoCount = UndoArray.Count()
+    End Function
+
+    Public LastSaved As New LastSave
+
     Private Sub TextBoxIs_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBoxIs.KeyDown
         If e.KeyCode = Keys.Enter And Not e.Shift Then
             e.SuppressKeyPress = True
             Dim Position As Integer = TextBoxIs.SelectionStart
-            Dim GeneralText, FirstText As String
-            Text = TextBoxIs.Lines(TextBoxIs.GetLineFromCharIndex(Position))
-            FirstText = Text + ""
-            GeneralText = ""
-            Text = LCase(Text)
-            For i As Integer = 0 To 9
-                Text = Text.Replace(Convert.ToString(i) + "(", Convert.ToString(i) + "*(")
-                Text = Text.Replace(")" + Convert.ToString(i), ")*" + Convert.ToString(i))
-                Text = Text.Replace(Convert.ToString(i) + "pi", Convert.ToString(i) + "*pi")
-                Text = Text.Replace("pi" + Convert.ToString(i), "pi*" + Convert.ToString(i))
-                Text = Text.Replace(Convert.ToString(i) + "e", Convert.ToString(i) + "*e")
-                Text = Text.Replace("e" + Convert.ToString(i), "e*" + Convert.ToString(i))
-            Next
-            Text = Text.Replace("pi(", "pi*(")
-            Text = Text.Replace("e(", "e*(")
-            Text = Text.Replace(")pi", ")*pi")
-            Text = Text.Replace(")e", ")*e")
-            Text = Text.Replace("pi", Convert.ToString(Math.PI))
-            Text = Text.Replace("e", Convert.ToString(Math.E))
-            Text = Text.Replace(")(", ")*(")
-            Text = Text.Replace(" ", "")
-            Text = Text.Replace(",", ".")
-            Text = Calculate(Text)
-            If Text = FirstText Then
-                Text = ""
+            Dim FirstText, Row As String
+            If TextBoxIs.Lines.Length = 0 Then
+                Row = ""
+            Else
+                Row = TextBoxIs.Lines(TextBoxIs.GetLineFromCharIndex(Position))
             End If
-            For Each elem In TextBoxIs.Lines.Take(TextBoxIs.GetLineFromCharIndex(Position) + 1).ToArray()
-                GeneralText += elem + vbCrLf
+            FirstText = Row + ""
+            Row = LCase(Row)
+            For i As Integer = 0 To 9
+                Row = Row.Replace(Convert.ToString(i) + "(", Convert.ToString(i) + "*(")
+                Row = Row.Replace(")" + Convert.ToString(i), ")*" + Convert.ToString(i))
+                Row = Row.Replace(Convert.ToString(i) + "pi", Convert.ToString(i) + "*pi")
+                Row = Row.Replace("pi" + Convert.ToString(i), "pi*" + Convert.ToString(i))
+                Row = Row.Replace(Convert.ToString(i) + "e", Convert.ToString(i) + "*e")
+                Row = Row.Replace("e" + Convert.ToString(i), "e*" + Convert.ToString(i))
             Next
-            GeneralText += Text
-            For Each elem In TextBoxIs.Lines.Skip(TextBoxIs.GetLineFromCharIndex(Position) + 1).ToArray()
-                GeneralText += vbCrLf + elem
-            Next
-            TextBoxIs.Text = GeneralText
-            Try
-                TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 2) - 1
-            Catch ex As Exception
-                TextBoxIs.SelectionStart = TextBoxIs.TextLength
-            End Try
+            Row = Row.Replace("pi(", "pi*(")
+            Row = Row.Replace("e(", "e*(")
+            Row = Row.Replace(")pi", ")*pi")
+            Row = Row.Replace(")e", ")*e")
+            Row = Row.Replace("pi", Convert.ToString(Math.PI))
+            Row = Row.Replace("e", Convert.ToString(Math.E))
+            Row = Row.Replace(")(", ")*(")
+            Row = Row.Replace(" ", "")
+            Row = Row.Replace(",", ".")
+            Row = Calculate(Row)
+            If Row = FirstText Then
+                Row = ""
+            End If
+            If Row <> "" Then
+                Try
+                    TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 1) - 1
+                Catch ex As Exception
+                    TextBoxIs.SelectionStart = TextBoxIs.TextLength
+                End Try
+            End If
+            TextBoxIs.SelectedText = vbCrLf + Row
+            If Row <> "" Then
+                Try
+                    TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 2) - 1
+                Catch ex As Exception
+                    TextBoxIs.SelectionStart = TextBoxIs.TextLength
+                End Try
+            End If
         End If
 
         If e.KeyCode = Keys.KeyCode.S And e.Control Then
@@ -55,6 +89,41 @@ Public Class Form1
 
         If e.KeyCode = Keys.KeyCode.O And e.Control Then
             FunctionOpenFile()
+        End If
+
+        If e.KeyCode = Keys.KeyCode.Enter And e.Shift Then
+            e.SuppressKeyPress = True
+            TextBoxIs.SelectedText = vbCrLf
+        End If
+
+        If e.KeyCode = Keys.KeyCode.Z And e.Control Then
+            e.SuppressKeyPress = True
+            If UndoArray.Count > 0 Then
+                LastOperatopnIsUndo = True
+                Dim Position As Integer = TextBoxIs.SelectionStart
+                Dim MakeUndo As UndoItem = UndoArray.Pop()
+                TextBoxIs.SelectionStart = MakeUndo.Start
+                TextBoxIs.SelectionLength = MakeUndo.NewEnd - MakeUndo.Start
+                TextBoxIs.SelectedText = MakeUndo.OldDiff
+                TextBoxIs.SelectionStart = MakeUndo.Position
+                MakeUndo.Position = Position + 0
+                RedoArray.Push(MakeUndo)
+            End If
+        End If
+
+        If e.KeyCode = Keys.KeyCode.Y And e.Control Then
+            e.SuppressKeyPress = True
+            If RedoArray.Count > 0 Then
+                LastOperatopnIsUndo = True
+                Dim Position As Integer = TextBoxIs.SelectionStart
+                Dim MakeRedo As UndoItem = RedoArray.Pop()
+                TextBoxIs.SelectionStart = MakeRedo.Start
+                TextBoxIs.SelectionLength = MakeRedo.OldEnd - MakeRedo.Start
+                TextBoxIs.SelectedText = MakeRedo.NewDiff
+                TextBoxIs.SelectionStart = MakeRedo.Position
+                MakeRedo.Position = Position + 0
+                UndoArray.Push(MakeRedo)
+            End If
         End If
     End Sub
     Function Calculate(str As String)
@@ -85,6 +154,13 @@ Public Class Form1
                                         Exit While
                                     End If
                                 End While
+                                Try
+                                    If IsNumeric(s1(s1.Length - i)) Then
+                                        s1 = s1.Substring(0, s1.Length - i + 1) + "*" + f
+                                    End If
+                                Catch ex As Exception
+
+                                End Try
                                 Select Case f
                                     Case "sin"
                                         s2 = Convert.ToString(Math.Round(Math.Sin(Convert.ToDouble(s2 * Math.PI / 180)), 6))
@@ -136,6 +212,36 @@ Public Class Form1
                         If i + 1 = str.Length Then
                             str += ")"
                         End If
+                    End If
+                Next
+            End While
+
+            While str.Contains("!")
+                c1 = ""
+                start = 0
+                count = 1
+                For i As Integer = 0 To str.Length
+                    If (IsNumeric(str(i)) Or str(i) = ".") And c1 = "" Then
+                        c1 = str(i)
+                        start = i + 0
+                        count = 1
+                    ElseIf IsNumeric(str(i)) Or str(i) = "." Then
+                        c1 += str(i)
+                        count += 1
+                    ElseIf str(i) = "!" Then
+                        count += 1
+                        c1d = Convert.ToDouble(c1)
+                        s1 = str.Substring(0, start)
+                        c2d = 1
+                        For j As Integer = 1 To c1d
+                            c2d = c2d * j
+                        Next
+                        s2 = Convert.ToString(c2d)
+                        s3 = str.Substring(start + count)
+                        str = s1 + s2 + s3
+                        Exit For
+                    Else
+                        c1 = ""
                     End If
                 Next
             End While
@@ -260,42 +366,13 @@ Public Class Form1
         End Try
     End Function
 
-    Private Sub CloseButton_Click(sender As Object, e As EventArgs) Handles CloseButton.Click
-        Application.Exit()
-    End Sub
-
-    Private IsMovingWindow As Boolean = False
-    Private DownMouseX, DownMouseY As Integer
-
-    Private Sub MoveWindow_MouseDown(sender As Object, e As MouseEventArgs) Handles MoveWindow.MouseDown
-        If e.Button = System.Windows.Forms.MouseButtons.Left Then
-            IsMovingWindow = True
-            DownMouseX = e.X
-            DownMouseY = e.Y
-        End If
-    End Sub
-
-    Private Sub MoveWindow_MouseMove(sender As Object, e As MouseEventArgs) Handles MoveWindow.MouseMove
-        If IsMovingWindow Then
-            Dim CurrentWindowPosition = New System.Drawing.Point
-            CurrentWindowPosition.X = Me.Location.X + (e.X - DownMouseX)
-            CurrentWindowPosition.Y = Me.Location.Y + (e.Y - DownMouseY)
-            Me.Location = CurrentWindowPosition
-        End If
-    End Sub
-
-    Private Sub MoveWindow_MouseUp(sender As Object, e As MouseEventArgs) Handles MoveWindow.MouseUp
-        If e.Button = System.Windows.Forms.MouseButtons.Left Then
-            IsMovingWindow = False
-        End If
-    End Sub
-
     Private Sub SaveAsButton_Click(sender As Object, e As EventArgs) Handles SaveAsButton.Click
         Dim SaveAsFile As New SaveFileDialog
         SaveAsFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
-        If SaveAsFile.ShowDialog <> System.Windows.Forms.DialogResult.Cancel Then
+        If SaveAsFile.ShowDialog <> DialogResult.Cancel Then
             Save(SaveAsFile.FileName)
             OpenedFile = SaveAsFile.FileName
+            MakeSaveData()
         End If
     End Sub
 
@@ -306,10 +383,24 @@ Public Class Form1
     Function FunctionOpenFile()
         Dim OpenFile As New OpenFileDialog
         OpenFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
-        If OpenFile.ShowDialog <> System.Windows.Forms.DialogResult.Cancel Then
-            TextBoxIs.Text = IO.File.ReadAllText(OpenFile.FileName)
+        If OpenFile.ShowDialog <> DialogResult.Cancel Then
+            If CanMissText Then
+                Dim QuestionAboutDataMiss As DialogResult = MessageBox.Show("Do you want to save changes?", "Calc", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
+                If QuestionAboutDataMiss = DialogResult.Cancel Then
+                    Exit Function
+                ElseIf QuestionAboutDataMiss = DialogResult.Yes Then
+                    FunctionSaveFile()
+                End If
+            End If
+            Dim TextFromFile As String = IO.File.ReadAllText(OpenFile.FileName)
+            TextFromFile.Replace(vbVerticalTab, vbCrLf)
+            TextBoxIs.Text = TextFromFile
             OpenedFile = OpenFile.FileName
-            MoveWindow.Text = OpenedFile
+            Me.Text = "Calc > " + OpenedFile
+            UndoArray.Clear()
+            RedoArray.Clear()
+            MakeSaveData()
+            CanMissText = False
         End If
     End Function
 
@@ -324,22 +415,23 @@ Public Class Form1
             If SaveFile.ShowDialog <> System.Windows.Forms.DialogResult.Cancel Then
                 Save(SaveFile.FileName)
                 OpenedFile = SaveFile.FileName
+            Else
+                Return False
             End If
         Else
             Save(OpenedFile)
         End If
+        Return True
     End Function
-
-    Private Sub HideButton_Click(sender As Object, e As EventArgs) Handles HideButton.Click
-        Me.WindowState = FormWindowState.Minimized
-    End Sub
 
     Function Save(path As String)
         Dim f As FileStream = File.Create(path)
         Dim filebytes As Byte() = New UTF8Encoding(True).GetBytes(TextBoxIs.Text)
         f.Write(filebytes, 0, filebytes.Length)
         f.Close()
-        MoveWindow.Text = path
+        Me.Text = "Calc > " + path
+        MakeSaveData()
+        CanMissText = False
     End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -347,9 +439,74 @@ Public Class Form1
         Try
             TextBoxIs.Text = IO.File.ReadAllText(args(1))
             OpenedFile = args(1)
-            MoveWindow.Text = OpenedFile
+            Me.Text = "Calc > " + OpenedFile
+            MakeSaveData()
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        TextBoxIs.Size = New System.Drawing.Size(Me.Size.Width - 18, Me.Size.Height - 79)
+    End Sub
+
+    Private Sub TextBoxIs_TextChanged(sender As Object, e As EventArgs) Handles TextBoxIs.TextChanged
+        If Not LastOperatopnIsUndo Then
+            Dim NewUndoItem As New UndoItem
+            Dim CurrentText As String = TextBoxIs.Text
+            NewUndoItem.Start = 0
+            If CurrentText.Length <> 0 And LastText.Length <> 0 Then
+                While LastText(NewUndoItem.Start) = CurrentText(NewUndoItem.Start)
+                    NewUndoItem.Start += 1
+                    If NewUndoItem.Start = LastText.Length Or NewUndoItem.Start = CurrentText.Length Then
+                        NewUndoItem.Start -= 1
+                        Exit While
+                    End If
+                End While
+                NewUndoItem.OldEnd = LastText.Length - 1
+                NewUndoItem.NewEnd = CurrentText.Length - 1
+                While CurrentText(NewUndoItem.NewEnd) = LastText(NewUndoItem.OldEnd)
+                    If NewUndoItem.OldEnd = NewUndoItem.Start Or NewUndoItem.NewEnd = NewUndoItem.Start Then
+                        Exit While
+                    End If
+                    NewUndoItem.NewEnd -= 1
+                    NewUndoItem.OldEnd -= 1
+                End While
+                NewUndoItem.NewEnd += 1
+                NewUndoItem.OldEnd += 1
+            Else
+                NewUndoItem.NewEnd = CurrentText.Length
+                NewUndoItem.OldEnd = LastText.Length
+            End If
+            NewUndoItem.NewDiff = CurrentText.Substring(NewUndoItem.Start, NewUndoItem.NewEnd - NewUndoItem.Start)
+            NewUndoItem.OldDiff = LastText.Substring(NewUndoItem.Start, NewUndoItem.OldEnd - NewUndoItem.Start)
+            NewUndoItem.Position = LastPosition + 0
+            UndoArray.Push(NewUndoItem)
+            RedoArray.Clear()
+        Else
+            LastOperatopnIsUndo = False
+        End If
+        LastText = TextBoxIs.Text + ""
+        LastPosition = TextBoxIs.SelectionStart + 0
+        If (LastSaved.Text <> TextBoxIs.Text Or LastSaved.UndoCount <> UndoArray.Count) And Me.Text(Me.Text.Length - 1) <> "*" Then
+            Me.Text += "*"
+            CanMissText = True
+        ElseIf LastSaved.Text = TextBoxIs.Text And LastSaved.UndoCount = UndoArray.Count And Me.Text(Me.Text.Length - 1) = "*" Then
+            Me.Text = "Calc > " + OpenedFile
+            CanMissText = False
+        End If
+    End Sub
+
+    Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If CanMissText Then
+            Dim QuestionAboutDataMiss As DialogResult = MessageBox.Show("Do you want to save changes?", "Calc", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
+            If QuestionAboutDataMiss = DialogResult.Cancel Then
+                e.Cancel = True
+            ElseIf QuestionAboutDataMiss = DialogResult.Yes Then
+                If Not FunctionSaveFile() Then
+                    e.Cancel = True
+                End If
+            End If
+        End If
     End Sub
 End Class
