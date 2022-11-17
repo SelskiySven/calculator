@@ -440,6 +440,8 @@ Public Class Form1
             TextBoxIs.Text = IO.File.ReadAllText(args(1))
             OpenedFile = args(1)
             Me.Text = "Calc > " + OpenedFile
+            UndoArray.Clear()
+            CanMissText = False
             MakeSaveData()
         Catch ex As Exception
 
