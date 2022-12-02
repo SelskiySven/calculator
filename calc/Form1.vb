@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Drawing
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
@@ -104,6 +105,8 @@ Public Class Form1
                 Dim MakeUndo As UndoItem = UndoArray.Pop()
                 TextBoxIs.SelectionStart = MakeUndo.Start
                 TextBoxIs.SelectionLength = MakeUndo.NewEnd - MakeUndo.Start
+                TextBoxIs.SelectedText = ""
+                LastOperatopnIsUndo = True
                 TextBoxIs.SelectedText = MakeUndo.OldDiff
                 TextBoxIs.SelectionStart = MakeUndo.Position
                 MakeUndo.Position = Position + 0
@@ -119,6 +122,8 @@ Public Class Form1
                 Dim MakeRedo As UndoItem = RedoArray.Pop()
                 TextBoxIs.SelectionStart = MakeRedo.Start
                 TextBoxIs.SelectionLength = MakeRedo.OldEnd - MakeRedo.Start
+                TextBoxIs.SelectedText = ""
+                LastOperatopnIsUndo = True
                 TextBoxIs.SelectedText = MakeRedo.NewDiff
                 TextBoxIs.SelectionStart = MakeRedo.Position
                 MakeRedo.Position = Position + 0
@@ -163,41 +168,45 @@ Public Class Form1
                                 End Try
                                 Select Case f
                                     Case "sin"
-                                        s2 = Convert.ToString(Math.Round(Math.Sin(Convert.ToDouble(s2 * Math.PI / 180)), 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Sin(Convert.ToDouble(s2 * Math.PI / 180)), 9))
                                     Case "cos"
-                                        s2 = Convert.ToString(Math.Round(Math.Cos(Convert.ToDouble(s2 * Math.PI / 180)), 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Cos(Convert.ToDouble(s2 * Math.PI / 180)), 9))
                                     Case "tan"
-                                        s2 = Convert.ToString(Math.Round(Math.Tan(Convert.ToDouble(s2 * Math.PI / 180)), 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Tan(Convert.ToDouble(s2 * Math.PI / 180)), 9))
                                     Case "ctn"
-                                        s2 = Convert.ToString(Math.Round(Math.Tan(1 / Convert.ToDouble(s2 * Math.PI / 180)), 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Tan(1 / Convert.ToDouble(s2 * Math.PI / 180)), 9))
                                     Case "arcsin"
-                                        s2 = Convert.ToString(Math.Round(Math.Asin(Convert.ToDouble(s2)) * 180 / Math.PI, 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Asin(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arccos"
-                                        s2 = Convert.ToString(Math.Round(Math.Acos(Convert.ToDouble(s2)) * 180 / Math.PI, 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Acos(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arctan"
-                                        s2 = Convert.ToString(Math.Round(Math.Atan(Convert.ToDouble(s2)) * 180 / Math.PI, 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Atan(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arcctg"
-                                        s2 = Convert.ToString(Math.Round(1 / Math.Atan(Convert.ToDouble(s2)) * 180 / Math.PI, 6))
+                                        s2 = Convert.ToString(Math.Round(1 / Math.Atan(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "sinh"
-                                        s2 = Convert.ToString(Math.Round(Math.Sinh(Convert.ToDouble(s2 * Math.PI / 180)), 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Sinh(Convert.ToDouble(s2 * Math.PI / 180)), 9))
                                     Case "cosh"
-                                        s2 = Convert.ToString(Math.Round(Math.Cosh(Convert.ToDouble(s2 * Math.PI / 180)), 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Cosh(Convert.ToDouble(s2 * Math.PI / 180)), 9))
                                     Case "tanh"
-                                        s2 = Convert.ToString(Math.Round(Math.Tanh(Convert.ToDouble(s2 * Math.PI / 180)), 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Tanh(Convert.ToDouble(s2 * Math.PI / 180)), 9))
                                     Case "arcsinh"
-                                        s2 = Convert.ToString(Math.Round(Math.Asinh(Convert.ToDouble(s2)) * 180 / Math.PI, 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Asinh(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arccosh"
-                                        s2 = Convert.ToString(Math.Round(Math.Acosh(Convert.ToDouble(s2)) * 180 / Math.PI, 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Acosh(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arctanh"
-                                        s2 = Convert.ToString(Math.Round(Math.Atanh(Convert.ToDouble(s2)) * 180 / Math.PI, 6))
+                                        s2 = Convert.ToString(Math.Round(Math.Atanh(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "sqrt"
-                                        s2 = Convert.ToString(Convert.ToDouble(s2) ^ 0.5)
+                                        s2 = Convert.ToString(Math.Round(Convert.ToDouble(s2) ^ 0.5, 9))
                                     Case "ln"
-                                        s2 = Convert.ToString(Math.Log(Convert.ToDouble(s2)))
+                                        s2 = Convert.ToString(Math.Round(Math.Log(Convert.ToDouble(s2)), 9))
                                     Case "lg"
-                                        s2 = Convert.ToString(Math.Log(Convert.ToDouble(s2)) / Math.Log(10))
+                                        s2 = Convert.ToString(Math.Round(Math.Log(Convert.ToDouble(s2)) / Math.Log(10), 9))
                                     Case "log"
-                                        s2 = Convert.ToString(Math.Log(Convert.ToDouble(s2.Substring(s2.IndexOf(";") + 1))) / Math.Log(Convert.ToDouble(s2.Substring(0, s2.IndexOf(";")))))
+                                        If s2.Contains(";") Then
+                                            s2 = Convert.ToString(Math.Round(Math.Log(Convert.ToDouble(s2.Substring(s2.IndexOf(";") + 1))) / Math.Log(Convert.ToDouble(s2.Substring(0, s2.IndexOf(";")))), 9))
+                                        Else
+                                            s2 = Convert.ToString(Math.Round(Math.Log(Convert.ToDouble(s2)), 9))
+                                        End If
                                 End Select
                                 str = s1.Substring(0, s1.Length - f.Length) + s2 + s3
                             Else
@@ -275,7 +284,7 @@ Public Class Form1
                 c1d = Convert.ToDouble(c1)
                 c2d = Convert.ToDouble(c2)
                 s1 = str.Substring(0, start)
-                s2 = Convert.ToString(Math.Round(c1d ^ c2d, 6))
+                s2 = Convert.ToString(Math.Round(c1d ^ c2d, 9))
                 s3 = str.Substring(start + count)
                 str = s1 + s2 + s3
             End While
@@ -310,9 +319,9 @@ Public Class Form1
                 s1 = str.Substring(0, start)
                 Select Case f
                     Case "*"
-                        s2 = Convert.ToString(Math.Round(c1d * c2d, 6))
+                        s2 = Convert.ToString(Math.Round(c1d * c2d, 9))
                     Case "/"
-                        s2 = Convert.ToString(Math.Round(c1d / c2d, 6))
+                        s2 = Convert.ToString(Math.Round(c1d / c2d, 9))
                 End Select
                 s3 = str.Substring(start + count)
                 str = s1 + s2 + s3
@@ -348,15 +357,15 @@ Public Class Form1
                 s1 = str.Substring(0, start)
                 Select Case f
                     Case "+"
-                        s2 = Convert.ToString(Math.Round(c1d + c2d, 6))
+                        s2 = Convert.ToString(c1d + c2d)
                     Case "-"
-                        s2 = Convert.ToString(Math.Round(c1d - c2d, 6))
+                        s2 = Convert.ToString(c1d - c2d)
                 End Select
                 s3 = str.Substring(start + count)
                 str = s1 + s2 + s3
             End While
             For Each num In Regex.Split(str, ";")
-                If Not IsNumeric(num) Then
+                If Not IsNumeric(num) Or num.Contains("£") Then
                     Return ""
                 End If
             Next
@@ -449,7 +458,7 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        TextBoxIs.Size = New System.Drawing.Size(Me.Size.Width - 18, Me.Size.Height - 79)
+        TextBoxIs.Size = New Size(Me.Size.Width - 18, Me.Size.Height - 75)
     End Sub
 
     Private Sub TextBoxIs_TextChanged(sender As Object, e As EventArgs) Handles TextBoxIs.TextChanged
@@ -494,7 +503,11 @@ Public Class Form1
             Me.Text += "*"
             CanMissText = True
         ElseIf LastSaved.Text = TextBoxIs.Text And LastSaved.UndoCount = UndoArray.Count And Me.Text(Me.Text.Length - 1) = "*" Then
-            Me.Text = "Calc > " + OpenedFile
+            If OpenedFile = "" Then
+                Me.Text = "Calc > Untitled"
+            Else
+                Me.Text = "Calc > " + OpenedFile
+            End If
             CanMissText = False
         End If
     End Sub
@@ -509,6 +522,12 @@ Public Class Form1
                     e.Cancel = True
                 End If
             End If
+        End If
+    End Sub
+
+    Private Sub FontChange_TextChanged(sender As Object, e As EventArgs) Handles FontChange.TextChanged
+        If IsNumeric(FontChange.Text) Then
+            TextBoxIs.Font = New Font("Segoe UI", Convert.ToInt16(FontChange.Text))
         End If
     End Sub
 End Class

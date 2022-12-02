@@ -22,56 +22,101 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.TextBoxIs = New System.Windows.Forms.RichTextBox()
-        Me.OpenButton = New System.Windows.Forms.Button()
-        Me.SaveButton = New System.Windows.Forms.Button()
-        Me.SaveAsButton = New System.Windows.Forms.Button()
+        Me.LabelFont = New System.Windows.Forms.Label()
+        Me.FontChange = New System.Windows.Forms.ComboBox()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.FileCollection = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenButton = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveButton = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveAsButton = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TextBoxIs = New System.Windows.Forms.TextBox()
+        Me.ContextMenuStrip1.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
-        'TextBoxIs
+        'LabelFont
         '
-        Me.TextBoxIs.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBoxIs.Location = New System.Drawing.Point(0, 32)
-        Me.TextBoxIs.Margin = New System.Windows.Forms.Padding(0)
-        Me.TextBoxIs.Name = "TextBoxIs"
-        Me.TextBoxIs.Size = New System.Drawing.Size(800, 568)
-        Me.TextBoxIs.TabIndex = 0
-        Me.TextBoxIs.Text = ""
-        Me.TextBoxIs.WordWrap = False
+        Me.LabelFont.AutoSize = True
+        Me.LabelFont.Location = New System.Drawing.Point(54, 4)
+        Me.LabelFont.Name = "LabelFont"
+        Me.LabelFont.Size = New System.Drawing.Size(38, 20)
+        Me.LabelFont.TabIndex = 6
+        Me.LabelFont.Text = "Font"
+        '
+        'FontChange
+        '
+        Me.FontChange.BackColor = System.Drawing.SystemColors.Window
+        Me.FontChange.FormattingEnabled = True
+        Me.FontChange.Items.AddRange(New Object() {"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"})
+        Me.FontChange.Location = New System.Drawing.Point(96, 0)
+        Me.FontChange.Name = "FontChange"
+        Me.FontChange.Size = New System.Drawing.Size(57, 28)
+        Me.FontChange.TabIndex = 7
+        Me.FontChange.Text = "9"
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(102, 28)
+        '
+        'FileToolStripMenuItem
+        '
+        Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(101, 24)
+        Me.FileToolStripMenuItem.Text = "File"
+        '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileCollection})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(800, 28)
+        Me.MenuStrip1.TabIndex = 8
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'FileCollection
+        '
+        Me.FileCollection.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenButton, Me.SaveButton, Me.SaveAsButton})
+        Me.FileCollection.Name = "FileCollection"
+        Me.FileCollection.Size = New System.Drawing.Size(46, 24)
+        Me.FileCollection.Text = "File"
         '
         'OpenButton
         '
-        Me.OpenButton.BackColor = System.Drawing.SystemColors.Control
-        Me.OpenButton.Location = New System.Drawing.Point(2, 2)
-        Me.OpenButton.Margin = New System.Windows.Forms.Padding(0)
         Me.OpenButton.Name = "OpenButton"
-        Me.OpenButton.Size = New System.Drawing.Size(70, 28)
-        Me.OpenButton.TabIndex = 3
-        Me.OpenButton.Text = "Open"
-        Me.OpenButton.UseVisualStyleBackColor = False
+        Me.OpenButton.Size = New System.Drawing.Size(196, 26)
+        Me.OpenButton.Text = "Open (CTRL+O)"
         '
         'SaveButton
         '
-        Me.SaveButton.BackColor = System.Drawing.SystemColors.Control
-        Me.SaveButton.Location = New System.Drawing.Point(74, 2)
-        Me.SaveButton.Margin = New System.Windows.Forms.Padding(0)
         Me.SaveButton.Name = "SaveButton"
-        Me.SaveButton.Size = New System.Drawing.Size(70, 28)
-        Me.SaveButton.TabIndex = 4
-        Me.SaveButton.Text = "Save"
-        Me.SaveButton.UseVisualStyleBackColor = False
+        Me.SaveButton.Size = New System.Drawing.Size(196, 26)
+        Me.SaveButton.Text = "Save (CTRL+S)"
         '
         'SaveAsButton
         '
-        Me.SaveAsButton.BackColor = System.Drawing.SystemColors.Control
-        Me.SaveAsButton.Location = New System.Drawing.Point(146, 2)
-        Me.SaveAsButton.Margin = New System.Windows.Forms.Padding(0)
         Me.SaveAsButton.Name = "SaveAsButton"
-        Me.SaveAsButton.Size = New System.Drawing.Size(70, 28)
-        Me.SaveAsButton.TabIndex = 5
-        Me.SaveAsButton.Text = "Save as"
-        Me.SaveAsButton.UseVisualStyleBackColor = False
+        Me.SaveAsButton.Size = New System.Drawing.Size(196, 26)
+        Me.SaveAsButton.Text = "Save As"
+        '
+        'TextBoxIs
+        '
+        Me.TextBoxIs.AcceptsTab = True
+        Me.TextBoxIs.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxIs.Location = New System.Drawing.Point(0, 28)
+        Me.TextBoxIs.Margin = New System.Windows.Forms.Padding(0)
+        Me.TextBoxIs.MaxLength = 2147483647
+        Me.TextBoxIs.Multiline = True
+        Me.TextBoxIs.Name = "TextBoxIs"
+        Me.TextBoxIs.Size = New System.Drawing.Size(800, 572)
+        Me.TextBoxIs.TabIndex = 1
         '
         'Form1
         '
@@ -79,20 +124,30 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.SystemColors.MenuBar
         Me.ClientSize = New System.Drawing.Size(800, 600)
-        Me.Controls.Add(Me.SaveAsButton)
-        Me.Controls.Add(Me.SaveButton)
-        Me.Controls.Add(Me.OpenButton)
         Me.Controls.Add(Me.TextBoxIs)
+        Me.Controls.Add(Me.FontChange)
+        Me.Controls.Add(Me.LabelFont)
+        Me.Controls.Add(Me.MenuStrip1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MainMenuStrip = Me.MenuStrip1
         Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Name = "Form1"
         Me.Text = "Calc > Untitled"
+        Me.ContextMenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents TextBoxIs As RichTextBox
-    Friend WithEvents OpenButton As Button
-    Friend WithEvents SaveButton As Button
-    Friend WithEvents SaveAsButton As Button
+    Friend WithEvents LabelFont As Label
+    Friend WithEvents FontChange As ComboBox
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents MenuStrip1 As MenuStrip
+    Friend WithEvents FileCollection As ToolStripMenuItem
+    Friend WithEvents OpenButton As ToolStripMenuItem
+    Friend WithEvents SaveButton As ToolStripMenuItem
+    Friend WithEvents SaveAsButton As ToolStripMenuItem
+    Friend WithEvents TextBoxIs As TextBox
 End Class
