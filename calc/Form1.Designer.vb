@@ -24,8 +24,6 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.LabelFont = New System.Windows.Forms.Label()
-        Me.FontChange = New System.Windows.Forms.ComboBox()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
@@ -33,31 +31,11 @@ Partial Class Form1
         Me.OpenButton = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveButton = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveAsButton = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TextBoxIs = New System.Windows.Forms.TextBox()
-        Me.HelpLabel = New System.Windows.Forms.Label()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'LabelFont
-        '
-        Me.LabelFont.AutoSize = True
-        Me.LabelFont.Location = New System.Drawing.Point(54, 4)
-        Me.LabelFont.Name = "LabelFont"
-        Me.LabelFont.Size = New System.Drawing.Size(38, 20)
-        Me.LabelFont.TabIndex = 6
-        Me.LabelFont.Text = "Font"
-        '
-        'FontChange
-        '
-        Me.FontChange.BackColor = System.Drawing.SystemColors.Window
-        Me.FontChange.FormattingEnabled = True
-        Me.FontChange.Items.AddRange(New Object() {"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"})
-        Me.FontChange.Location = New System.Drawing.Point(96, 0)
-        Me.FontChange.Name = "FontChange"
-        Me.FontChange.Size = New System.Drawing.Size(57, 28)
-        Me.FontChange.TabIndex = 7
-        Me.FontChange.Text = "9"
         '
         'ContextMenuStrip1
         '
@@ -75,7 +53,7 @@ Partial Class Form1
         'MenuStrip1
         '
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileCollection})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileCollection, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(800, 28)
@@ -107,10 +85,17 @@ Partial Class Form1
         Me.SaveAsButton.Size = New System.Drawing.Size(196, 26)
         Me.SaveAsButton.Text = "Save As"
         '
+        'HelpToolStripMenuItem
+        '
+        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(55, 24)
+        Me.HelpToolStripMenuItem.Text = "Help"
+        '
         'TextBoxIs
         '
         Me.TextBoxIs.AcceptsTab = True
         Me.TextBoxIs.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxIs.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.TextBoxIs.Location = New System.Drawing.Point(0, 28)
         Me.TextBoxIs.Margin = New System.Windows.Forms.Padding(0)
         Me.TextBoxIs.MaxLength = 2147483647
@@ -119,27 +104,13 @@ Partial Class Form1
         Me.TextBoxIs.Size = New System.Drawing.Size(800, 572)
         Me.TextBoxIs.TabIndex = 1
         '
-        'HelpLabel
-        '
-        Me.HelpLabel.AutoSize = True
-        Me.HelpLabel.Font = New System.Drawing.Font("Segoe UI", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.HelpLabel.Image = Global.calc.My.Resources.Resources.helpicon
-        Me.HelpLabel.Location = New System.Drawing.Point(747, 3)
-        Me.HelpLabel.Name = "HelpLabel"
-        Me.HelpLabel.Size = New System.Drawing.Size(41, 15)
-        Me.HelpLabel.TabIndex = 9
-        Me.HelpLabel.Text = "Label1"
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(120.0!, 120.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.SystemColors.MenuBar
         Me.ClientSize = New System.Drawing.Size(800, 600)
-        Me.Controls.Add(Me.HelpLabel)
         Me.Controls.Add(Me.TextBoxIs)
-        Me.Controls.Add(Me.FontChange)
-        Me.Controls.Add(Me.LabelFont)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -153,8 +124,6 @@ Partial Class Form1
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents LabelFont As Label
-    Friend WithEvents FontChange As ComboBox
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MenuStrip1 As MenuStrip
@@ -163,5 +132,5 @@ Partial Class Form1
     Friend WithEvents SaveButton As ToolStripMenuItem
     Friend WithEvents SaveAsButton As ToolStripMenuItem
     Friend WithEvents TextBoxIs As TextBox
-    Friend WithEvents HelpLabel As Label
+    Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
 End Class

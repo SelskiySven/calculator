@@ -526,9 +526,8 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub FontChange_TextChanged(sender As Object, e As EventArgs) Handles FontChange.TextChanged
-        If IsNumeric(FontChange.Text) Then
-            TextBoxIs.Font = New Font("Segoe UI", Convert.ToInt16(FontChange.Text))
-        End If
+    Private Sub HelpToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HelpToolStripMenuItem.Click
+        Dim hf = New HelpForm()
+        hf.show()
     End Sub
 End Class

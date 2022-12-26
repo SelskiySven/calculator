@@ -6,12 +6,12 @@
     <RootNamespace>calc</RootNamespace>
     <StartupObject>calc.Form1</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <Title>Calc</Title>
     <PackageProjectUrl>https://github.com/SelskiySven/calculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SelskiySven/calculator</RepositoryUrl>
     <FileVersion>2.3.2</FileVersion>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
