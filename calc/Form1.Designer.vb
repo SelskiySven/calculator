@@ -34,6 +34,7 @@ Partial Class Form1
         Me.SaveButton = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveAsButton = New System.Windows.Forms.ToolStripMenuItem()
         Me.TextBoxIs = New System.Windows.Forms.TextBox()
+        Me.HelpLabel = New System.Windows.Forms.Label()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -118,12 +119,24 @@ Partial Class Form1
         Me.TextBoxIs.Size = New System.Drawing.Size(800, 572)
         Me.TextBoxIs.TabIndex = 1
         '
+        'HelpLabel
+        '
+        Me.HelpLabel.AutoSize = True
+        Me.HelpLabel.Font = New System.Drawing.Font("Segoe UI", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.HelpLabel.Image = Global.calc.My.Resources.Resources.helpicon
+        Me.HelpLabel.Location = New System.Drawing.Point(747, 3)
+        Me.HelpLabel.Name = "HelpLabel"
+        Me.HelpLabel.Size = New System.Drawing.Size(41, 15)
+        Me.HelpLabel.TabIndex = 9
+        Me.HelpLabel.Text = "Label1"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(120.0!, 120.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.SystemColors.MenuBar
         Me.ClientSize = New System.Drawing.Size(800, 600)
+        Me.Controls.Add(Me.HelpLabel)
         Me.Controls.Add(Me.TextBoxIs)
         Me.Controls.Add(Me.FontChange)
         Me.Controls.Add(Me.LabelFont)
@@ -150,4 +163,5 @@ Partial Class Form1
     Friend WithEvents SaveButton As ToolStripMenuItem
     Friend WithEvents SaveAsButton As ToolStripMenuItem
     Friend WithEvents TextBoxIs As TextBox
+    Friend WithEvents HelpLabel As Label
 End Class

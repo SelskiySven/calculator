@@ -455,6 +455,7 @@ Public Class Form1
         Catch ex As Exception
 
         End Try
+
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
