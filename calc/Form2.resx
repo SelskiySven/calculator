@@ -58,7 +58,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="HelpTextBox.Text" xml:space="preserve">
-    <value>AVALIBALE MATHEMATICAL FUNCTIONS:
+    <value>┌────────────────────────────────────┐
+│AVALIABLE MATHEMATICAL FUNCTIONS │
+└────────────────────────────────────┘
 ⦁ + — addition
 ⦁ - — substraction
 ⦁ * — multiplication
@@ -69,10 +71,14 @@
 ⦁ log(a;b) — logarithm of "b" base "a"
 ⦁ ln(a) — natural logarithm of "a"
 ⦁ lg(a) — decimal logarithm of "a"
-AVALIBALE CONSTANTS
+┌─────────────────────┐
+│AVALIABLE CONSTANTS│
+└─────────────────────┘
 ⦁ pi — 3.141592653589793
 ⦁ e — 2.718281828459045
-AVALIBALE TRIGONOMETRIC FUNCTIONS:
+┌─────────────────────────────────────┐
+│AVALIABLE TRIGONOMETRIC FUNCTIONS │
+└─────────────────────────────────────┘
 ⦁ sin(a) — sine of a, where "a" is a value in degrees
 ⦁ cos(a) — cosine of a, where "a" is a value in degrees
 ⦁ tan(a) — tangent of a, where "a" is a value in degrees

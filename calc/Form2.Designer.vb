@@ -31,23 +31,24 @@ Partial Class HelpForm
         Me.HelpTextBox.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.HelpTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.HelpTextBox.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.HelpTextBox.Location = New System.Drawing.Point(9, 9)
+        Me.HelpTextBox.Location = New System.Drawing.Point(8, 8)
         Me.HelpTextBox.Margin = New System.Windows.Forms.Padding(0)
         Me.HelpTextBox.Multiline = True
         Me.HelpTextBox.Name = "HelpTextBox"
         Me.HelpTextBox.ReadOnly = True
         Me.HelpTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.HelpTextBox.Size = New System.Drawing.Size(764, 535)
+        Me.HelpTextBox.Size = New System.Drawing.Size(767, 544)
         Me.HelpTextBox.TabIndex = 0
         Me.HelpTextBox.Text = resources.GetString("HelpTextBox.Text")
         '
         'HelpForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(782, 553)
+        Me.ClientSize = New System.Drawing.Size(784, 561)
         Me.Controls.Add(Me.HelpTextBox)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.Name = "HelpForm"
         Me.Text = "Help"
         Me.ResumeLayout(False)

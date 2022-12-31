@@ -8,7 +8,7 @@ Public Class Form1
     Public OpenedFile As String = ""
     Public LastText As String = ""
     Public LastPosition As Integer = 0
-    Public LastOperatopnIsUndo As Boolean = False
+    Public LastOperationIsUndo As Boolean = False
     Public CanMissText As Boolean = False
     Public Class UndoItem
         Public Property Start As Integer = 0
@@ -44,7 +44,6 @@ Public Class Form1
             Else
                 Row = TextBoxIs.Lines(TextBoxIs.GetLineFromCharIndex(Position))
             End If
-            FirstText = Row + ""
             Row = LCase(Row)
             For i As Integer = 0 To 9
                 Row = Row.Replace(Convert.ToString(i) + "(", Convert.ToString(i) + "*(")
@@ -62,14 +61,16 @@ Public Class Form1
             Row = Row.Replace("e", Convert.ToString(Math.E))
             Row = Row.Replace(")(", ")*(")
             Row = Row.Replace(" ", "")
-            Row = Row.Replace(",", ".")
+            Row = Row.Replace(".", ",")
+            FirstText = Row + ""
             Row = Calculate(Row)
             If Row = FirstText Then
                 Row = ""
             End If
+            Row = Row.Replace(",", ".")
             If Row <> "" Then
                 Try
-                    TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 1) - 1
+                    TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 1) - 2
                 Catch ex As Exception
                     TextBoxIs.SelectionStart = TextBoxIs.TextLength
                 End Try
@@ -77,19 +78,11 @@ Public Class Form1
             TextBoxIs.SelectedText = vbCrLf + Row
             If Row <> "" Then
                 Try
-                    TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 2) - 1
+                    TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 2) - 2
                 Catch ex As Exception
                     TextBoxIs.SelectionStart = TextBoxIs.TextLength
                 End Try
             End If
-        End If
-
-        If e.KeyCode = Keys.KeyCode.S And e.Control Then
-            FunctionSaveFile()
-        End If
-
-        If e.KeyCode = Keys.KeyCode.O And e.Control Then
-            FunctionOpenFile()
         End If
 
         If e.KeyCode = Keys.KeyCode.Enter And e.Shift Then
@@ -100,15 +93,17 @@ Public Class Form1
         If e.KeyCode = Keys.KeyCode.Z And e.Control Then
             e.SuppressKeyPress = True
             If UndoArray.Count > 0 Then
-                LastOperatopnIsUndo = True
+                LastOperationIsUndo = True
                 Dim Position As Integer = TextBoxIs.SelectionStart
                 Dim MakeUndo As UndoItem = UndoArray.Pop()
                 TextBoxIs.SelectionStart = MakeUndo.Start
                 TextBoxIs.SelectionLength = MakeUndo.NewEnd - MakeUndo.Start
                 TextBoxIs.SelectedText = ""
-                LastOperatopnIsUndo = True
-                TextBoxIs.SelectedText = MakeUndo.OldDiff
-                TextBoxIs.SelectionStart = MakeUndo.Position
+                If MakeUndo.OldDiff <> "" Then
+                    LastOperationIsUndo = True
+                    TextBoxIs.SelectedText = MakeUndo.OldDiff
+                    TextBoxIs.SelectionStart = MakeUndo.Position
+                End If
                 MakeUndo.Position = Position + 0
                 RedoArray.Push(MakeUndo)
             End If
@@ -117,14 +112,16 @@ Public Class Form1
         If e.KeyCode = Keys.KeyCode.Y And e.Control Then
             e.SuppressKeyPress = True
             If RedoArray.Count > 0 Then
-                LastOperatopnIsUndo = True
+                LastOperationIsUndo = True
                 Dim Position As Integer = TextBoxIs.SelectionStart
                 Dim MakeRedo As UndoItem = RedoArray.Pop()
                 TextBoxIs.SelectionStart = MakeRedo.Start
                 TextBoxIs.SelectionLength = MakeRedo.OldEnd - MakeRedo.Start
                 TextBoxIs.SelectedText = ""
-                LastOperatopnIsUndo = True
-                TextBoxIs.SelectedText = MakeRedo.NewDiff
+                If MakeRedo.NewDiff <> "" Then
+                    LastOperationIsUndo = True
+                    TextBoxIs.SelectedText = MakeRedo.NewDiff
+                End If
                 TextBoxIs.SelectionStart = MakeRedo.Position
                 MakeRedo.Position = Position + 0
                 UndoArray.Push(MakeRedo)
@@ -230,11 +227,11 @@ Public Class Form1
                 start = 0
                 count = 1
                 For i As Integer = 0 To str.Length
-                    If (IsNumeric(str(i)) Or str(i) = ".") And c1 = "" Then
+                    If (IsNumeric(str(i)) Or str(i) = ",") And c1 = "" Then
                         c1 = str(i)
                         start = i + 0
                         count = 1
-                    ElseIf IsNumeric(str(i)) Or str(i) = "." Then
+                    ElseIf IsNumeric(str(i)) Or str(i) = "," Then
                         c1 += str(i)
                         count += 1
                     ElseIf str(i) = "!" Then
@@ -261,19 +258,19 @@ Public Class Form1
                 start = 0
                 count = 0
                 For i As Integer = str.Length() - 1 To 0 Step -1
-                    If ((IsNumeric(str(i)) Or str(i) = ".") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) And c1 = "" Then
+                    If ((IsNumeric(str(i)) Or str(i) = ",") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) And c1 = "" Then
                         c2 = str(i) + c2
                         count += 1
                     ElseIf str(i) = "^" And c1 = "" Then
                         c1 = " "
                         count += 1
-                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = ".") Or (str(i) = "-" And i = 0)) Then
+                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (str(i) = "-" And i = 0)) Then
                         c1 = str(i) + c1
                         count += 1
-                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = ".") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) Then
+                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) Then
                         c1 = str(i) + c1
                         count += 1
-                    ElseIf str(i) <> "." And Not IsNumeric(str(i)) And c1 = "" Then
+                    ElseIf str(i) <> "," And Not IsNumeric(str(i)) And c1 = "" Then
                         c2 = ""
                         count = 0
                     Else
@@ -296,17 +293,17 @@ Public Class Form1
                 start = 0
                 count = 0
                 For i As Integer = 0 To str.Length() - 1
-                    If ((IsNumeric(str(i)) Or str(i) = ".") Or (c1 = "" And str(i) = "-")) And c2 = "" Then
+                    If ((IsNumeric(str(i)) Or str(i) = ",") Or (c1 = "" And str(i) = "-")) And c2 = "" Then
                         c1 = c1 + str(i)
                         count += 1
                     ElseIf (str(i) = "*" Or str(i) = "/") And c2 = "" Then
                         c2 = " "
                         count += 1
                         f = str(i)
-                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = ".") Or (c2 = " " And str(i) = "-")) Then
+                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (c2 = " " And str(i) = "-")) Then
                         c2 = c2 + str(i)
                         count += 1
-                    ElseIf str(i) <> "." And Not IsNumeric(str(i)) And c2 = "" Then
+                    ElseIf str(i) <> "," And Not IsNumeric(str(i)) And c2 = "" Then
                         c1 = ""
                         start = i + 1
                         count = 0
@@ -334,17 +331,17 @@ Public Class Form1
                 start = 0
                 count = 0
                 For i As Integer = 0 To str.Length() - 1
-                    If (IsNumeric(str(i)) Or str(i) = "." Or (c1 = "" And str(i) = "-")) And c2 = "" Then
+                    If (IsNumeric(str(i)) Or str(i) = "," Or (c1 = "" And str(i) = "-")) And c2 = "" Then
                         c1 = c1 + str(i)
                         count += 1
                     ElseIf (str(i) = "+" Or str(i) = "-") And c2 = "" Then
                         c2 = " "
                         count += 1
                         f = str(i)
-                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = ".") Or (c2 = " " And str(i) = "-")) Then
+                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (c2 = " " And str(i) = "-")) Then
                         c2 = c2 + str(i)
                         count += 1
-                    ElseIf str(i) <> "." And Not IsNumeric(str(i)) And c2 = "" Then
+                    ElseIf str(i) <> "," And Not IsNumeric(str(i)) And c2 = "" Then
                         c1 = ""
                         start = i + 1
                         count = 0
@@ -357,9 +354,9 @@ Public Class Form1
                 s1 = str.Substring(0, start)
                 Select Case f
                     Case "+"
-                        s2 = Convert.ToString(c1d + c2d)
+                        s2 = Convert.ToString(Math.Round(c1d + c2d, 9))
                     Case "-"
-                        s2 = Convert.ToString(c1d - c2d)
+                        s2 = Convert.ToString(Math.Round(c1d - c2d, 9))
                 End Select
                 s3 = str.Substring(start + count)
                 str = s1 + s2 + s3
@@ -455,15 +452,16 @@ Public Class Form1
         Catch ex As Exception
 
         End Try
-
+        TextBoxIs.Size = New Size(Me.Size.Width - 16, Me.Size.Height - 64)
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        TextBoxIs.Size = New Size(Me.Size.Width - 18, Me.Size.Height - 75)
+        TextBoxIs.Size = New Size(Me.Size.Width - 16, Me.Size.Height - 64)
+
     End Sub
 
     Private Sub TextBoxIs_TextChanged(sender As Object, e As EventArgs) Handles TextBoxIs.TextChanged
-        If Not LastOperatopnIsUndo Then
+        If Not LastOperationIsUndo Then
             Dim NewUndoItem As New UndoItem
             Dim CurrentText As String = TextBoxIs.Text
             NewUndoItem.Start = 0
@@ -471,16 +469,12 @@ Public Class Form1
                 While LastText(NewUndoItem.Start) = CurrentText(NewUndoItem.Start)
                     NewUndoItem.Start += 1
                     If NewUndoItem.Start = LastText.Length Or NewUndoItem.Start = CurrentText.Length Then
-                        NewUndoItem.Start -= 1
                         Exit While
                     End If
                 End While
                 NewUndoItem.OldEnd = LastText.Length - 1
                 NewUndoItem.NewEnd = CurrentText.Length - 1
-                While CurrentText(NewUndoItem.NewEnd) = LastText(NewUndoItem.OldEnd)
-                    If NewUndoItem.OldEnd = NewUndoItem.Start Or NewUndoItem.NewEnd = NewUndoItem.Start Then
-                        Exit While
-                    End If
+                While CurrentText(NewUndoItem.NewEnd) = LastText(NewUndoItem.OldEnd) And NewUndoItem.NewEnd > NewUndoItem.Start And NewUndoItem.OldEnd > NewUndoItem.Start
                     NewUndoItem.NewEnd -= 1
                     NewUndoItem.OldEnd -= 1
                 End While
@@ -496,7 +490,7 @@ Public Class Form1
             UndoArray.Push(NewUndoItem)
             RedoArray.Clear()
         Else
-            LastOperatopnIsUndo = False
+            LastOperationIsUndo = False
         End If
         LastText = TextBoxIs.Text + ""
         LastPosition = TextBoxIs.SelectionStart + 0
@@ -528,6 +522,10 @@ Public Class Form1
 
     Private Sub HelpToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HelpToolStripMenuItem.Click
         Dim hf = New HelpForm()
-        hf.show()
+        hf.Show()
+    End Sub
+
+    Private Sub ComboBoxFont_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxFont.SelectedIndexChanged
+        TextBoxIs.Font = New Font("Segoe UI", ComboBoxFont.Text)
     End Sub
 End Class

@@ -9,9 +9,10 @@
     <Title>Calc</Title>
     <PackageProjectUrl>https://github.com/SelskiySven/calculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SelskiySven/calculator</RepositoryUrl>
-    <FileVersion>2.4</FileVersion>
+    <FileVersion>2.5</FileVersion>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,6 +42,13 @@
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
