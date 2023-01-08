@@ -2,7 +2,7 @@
 
 Public Class HelpForm
     Private Sub HelpForm_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        HelpTextBox.Size = New Size(Me.Size.Width - 32, Me.Size.Height - 56)
+        HelpTextBox.Size = New Size(Me.Size.Width - 42, Me.Size.Height - 70)
     End Sub
 
     Private Sub HelpForm_Load(sender As Object, e As EventArgs) Handles Me.Load

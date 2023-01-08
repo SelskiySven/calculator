@@ -227,11 +227,11 @@ Public Class Form1
                 start = 0
                 count = 1
                 For i As Integer = 0 To str.Length
-                    If (IsNumeric(str(i)) Or str(i) = ",") And c1 = "" Then
+                    If (IsNumeric(str(i)) Or str(i) = "," Or str(i) = ".") And c1 = "" Then
                         c1 = str(i)
                         start = i + 0
                         count = 1
-                    ElseIf IsNumeric(str(i)) Or str(i) = "," Then
+                    ElseIf IsNumeric(str(i)) Or str(i) = "," Or str(i) = "." Then
                         c1 += str(i)
                         count += 1
                     ElseIf str(i) = "!" Then
@@ -258,19 +258,19 @@ Public Class Form1
                 start = 0
                 count = 0
                 For i As Integer = str.Length() - 1 To 0 Step -1
-                    If ((IsNumeric(str(i)) Or str(i) = ",") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) And c1 = "" Then
+                    If ((IsNumeric(str(i)) Or str(i) = "," Or str(i) = ".") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) And c1 = "" Then
                         c2 = str(i) + c2
                         count += 1
                     ElseIf str(i) = "^" And c1 = "" Then
                         c1 = " "
                         count += 1
-                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (str(i) = "-" And i = 0)) Then
+                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = "," Or str(i) = ".") Or (str(i) = "-" And i = 0)) Then
                         c1 = str(i) + c1
                         count += 1
-                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) Then
+                    ElseIf c1 <> "" And ((IsNumeric(str(i)) Or str(i) = "," Or str(i) = ".") Or (str(i) = "-" And Not IsNumeric(str(Math.Max(i - 1, 0))))) Then
                         c1 = str(i) + c1
                         count += 1
-                    ElseIf str(i) <> "," And Not IsNumeric(str(i)) And c1 = "" Then
+                    ElseIf str(i) <> "," And str(i) <> "." And Not IsNumeric(str(i)) And c1 = "" Then
                         c2 = ""
                         count = 0
                     Else
@@ -293,17 +293,17 @@ Public Class Form1
                 start = 0
                 count = 0
                 For i As Integer = 0 To str.Length() - 1
-                    If ((IsNumeric(str(i)) Or str(i) = ",") Or (c1 = "" And str(i) = "-")) And c2 = "" Then
+                    If ((IsNumeric(str(i)) Or str(i) = "," Or str(i) = ".") Or (c1 = "" And str(i) = "-")) And c2 = "" Then
                         c1 = c1 + str(i)
                         count += 1
                     ElseIf (str(i) = "*" Or str(i) = "/") And c2 = "" Then
                         c2 = " "
                         count += 1
                         f = str(i)
-                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (c2 = " " And str(i) = "-")) Then
+                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = "," Or str(i) = ".") Or (c2 = " " And str(i) = "-")) Then
                         c2 = c2 + str(i)
                         count += 1
-                    ElseIf str(i) <> "," And Not IsNumeric(str(i)) And c2 = "" Then
+                    ElseIf str(i) <> "," And str(i) <> "." And Not IsNumeric(str(i)) And c2 = "" Then
                         c1 = ""
                         start = i + 1
                         count = 0
@@ -331,17 +331,17 @@ Public Class Form1
                 start = 0
                 count = 0
                 For i As Integer = 0 To str.Length() - 1
-                    If (IsNumeric(str(i)) Or str(i) = "," Or (c1 = "" And str(i) = "-")) And c2 = "" Then
+                    If (IsNumeric(str(i)) Or str(i) = "," Or str(i) = "." Or (c1 = "" And str(i) = "-")) And c2 = "" Then
                         c1 = c1 + str(i)
                         count += 1
                     ElseIf (str(i) = "+" Or str(i) = "-") And c2 = "" Then
                         c2 = " "
                         count += 1
                         f = str(i)
-                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = ",") Or (c2 = " " And str(i) = "-")) Then
+                    ElseIf c2 <> "" And ((IsNumeric(str(i)) Or str(i) = "," Or str(i) = ".") Or (c2 = " " And str(i) = "-")) Then
                         c2 = c2 + str(i)
                         count += 1
-                    ElseIf str(i) <> "," And Not IsNumeric(str(i)) And c2 = "" Then
+                    ElseIf str(i) <> "," And str(i) <> "." And Not IsNumeric(str(i)) And c2 = "" Then
                         c1 = ""
                         start = i + 1
                         count = 0
@@ -444,6 +444,8 @@ Public Class Form1
         Dim args() As String = Environment.GetCommandLineArgs()
         Try
             TextBoxIs.Text = IO.File.ReadAllText(args(1))
+            TextBoxIs.SelectionStart = 0
+            TextBoxIs.SelectionLength = 0
             OpenedFile = args(1)
             Me.Text = "Calc > " + OpenedFile
             UndoArray.Clear()
@@ -452,12 +454,15 @@ Public Class Form1
         Catch ex As Exception
 
         End Try
-        TextBoxIs.Size = New Size(Me.Size.Width - 16, Me.Size.Height - 64)
+        Me.ToolStripComboBoxFont.Margin = New System.Windows.Forms.Padding(LabelFont.Size.Width, 0, 0, 0)
+        Me.LabelFont.Location = New System.Drawing.Point(FileCollection.Size.Width + HelpToolStripMenuItem.Size.Width, 0)
+        Dim RectangleData = Me.RectangleToScreen(Me.ClientRectangle)
+        TextBoxIs.Size = New Size(RectangleData.Width, RectangleData.Height - 32)
     End Sub
 
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        TextBoxIs.Size = New Size(Me.Size.Width - 16, Me.Size.Height - 64)
-
+        Dim RectangleData = Me.RectangleToScreen(Me.ClientRectangle)
+        TextBoxIs.Size = New Size(RectangleData.Width, RectangleData.Height - 32)
     End Sub
 
     Private Sub TextBoxIs_TextChanged(sender As Object, e As EventArgs) Handles TextBoxIs.TextChanged
@@ -525,7 +530,7 @@ Public Class Form1
         hf.Show()
     End Sub
 
-    Private Sub ComboBoxFont_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxFont.SelectedIndexChanged
-        TextBoxIs.Font = New Font("Segoe UI", ComboBoxFont.Text)
+    Private Sub ToolStripComboBoxFont_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ToolStripComboBoxFont.SelectedIndexChanged
+        TextBoxIs.Font = New Font("Segoe UI", ToolStripComboBoxFont.Text)
     End Sub
 End Class
