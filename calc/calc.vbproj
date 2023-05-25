@@ -9,12 +9,12 @@
     <Title>Calc</Title>
     <PackageProjectUrl>https://github.com/SelskiySven/calculator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SelskiySven/calculator</RepositoryUrl>
-    <FileVersion>2.7</FileVersion>
+    <FileVersion>2.8</FileVersion>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <PackageIcon>icon.png</PackageIcon>
-    <AssemblyVersion>2.7</AssemblyVersion>
-    <Version>2.7</Version>
+    <AssemblyVersion>2.8</AssemblyVersion>
+    <Version>2.8</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,15 +1,18 @@
 ﻿Imports System.ComponentModel
 Imports System.Drawing
+Imports System.Globalization
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
-
+Imports System.Threading
 Public Class Form1
     Public OpenedFile As String = ""
     Public LastText As String = ""
     Public LastPosition As Integer = 0
     Public LastOperationIsUndo As Boolean = False
     Public CanMissText As Boolean = False
+
+
     Public Class UndoItem
         Public Property Start As Integer = 0
         Public Property NewEnd As Integer = 0
@@ -39,6 +42,7 @@ Public Class Form1
             e.SuppressKeyPress = True
             Dim Position As Integer = TextBoxIs.SelectionStart
             Dim FirstText, Row As String
+            Thread.CurrentThread.CurrentCulture = New CultureInfo("en-Us")
             If TextBoxIs.Lines.Length = 0 Then
                 Row = ""
             Else
@@ -61,12 +65,12 @@ Public Class Form1
             Row = Row.Replace("e", Convert.ToString(Math.E))
             Row = Row.Replace(")(", ")*(")
             Row = Row.Replace(" ", "")
+            Row = Row.Replace(",", ".")
             FirstText = Row + ""
             Row = Calculate(Row)
             If Row = FirstText Then
                 Row = ""
             End If
-            Row = Row.Replace(",", ".")
             If Row <> "" Then
                 Try
                     TextBoxIs.SelectionStart = TextBoxIs.GetFirstCharIndexFromLine(TextBoxIs.GetLineFromCharIndex(Position) + 1) - 2
@@ -128,10 +132,15 @@ Public Class Form1
         End If
     End Sub
 
-    Function ConvertToDouble(str As String)
-        Dim Dbl As Double
-        Dbl = Math.Min(Convert.ToDouble(str.Replace(",", ".")), Convert.ToDouble(str.Replace(".", ",")))
-        Return Dbl
+    Function ConvertToString(dbl As String)
+        Dim str As String
+        str = Convert.ToString(dbl)
+        If str.Contains("E") Then
+            Dim EIndex As Integer = str.IndexOf("E")
+            Dim power As Integer = Convert.ToInt32(str.Substring(EIndex + 2)) - 1
+            str = "0." + New String("0", power) + str.Substring(0, EIndex)
+        End If
+        Return str
     End Function
 
     Function Calculate(str As String)
@@ -171,44 +180,44 @@ Public Class Form1
                                 End Try
                                 Select Case f
                                     Case "sin"
-                                        s2 = Convert.ToString(Math.Round(Math.Sin(ConvertToDouble(s2) * Math.PI / 180), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Sin(Convert.ToDouble(s2) * Math.PI / 180), 9))
                                     Case "cos"
-                                        s2 = Convert.ToString(Math.Round(Math.Cos(ConvertToDouble(s2) * Math.PI / 180), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Cos(Convert.ToDouble(s2) * Math.PI / 180), 9))
                                     Case "tan"
-                                        s2 = Convert.ToString(Math.Round(Math.Tan(ConvertToDouble(s2) * Math.PI / 180), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Tan(Convert.ToDouble(s2) * Math.PI / 180), 9))
                                     Case "ctn"
-                                        s2 = Convert.ToString(Math.Round(Math.Tan(1 / ConvertToDouble(s2) * Math.PI / 180), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Tan(1 / Convert.ToDouble(s2) * Math.PI / 180), 9))
                                     Case "arcsin"
-                                        s2 = Convert.ToString(Math.Round(Math.Asin(ConvertToDouble(s2)) * 180 / Math.PI, 9))
+                                        s2 = ConvertToString(Math.Round(Math.Asin(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arccos"
-                                        s2 = Convert.ToString(Math.Round(Math.Acos(ConvertToDouble(s2)) * 180 / Math.PI, 9))
+                                        s2 = ConvertToString(Math.Round(Math.Acos(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arctan"
-                                        s2 = Convert.ToString(Math.Round(Math.Atan(ConvertToDouble(s2)) * 180 / Math.PI, 9))
+                                        s2 = ConvertToString(Math.Round(Math.Atan(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arcctg"
-                                        s2 = Convert.ToString(Math.Round(1 / Math.Atan(ConvertToDouble(s2)) * 180 / Math.PI, 9))
+                                        s2 = ConvertToString(Math.Round(1 / Math.Atan(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "sinh"
-                                        s2 = Convert.ToString(Math.Round(Math.Sinh(ConvertToDouble(s2) * Math.PI / 180), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Sinh(Convert.ToDouble(s2) * Math.PI / 180), 9))
                                     Case "cosh"
-                                        s2 = Convert.ToString(Math.Round(Math.Cosh(ConvertToDouble(s2) * Math.PI / 180), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Cosh(Convert.ToDouble(s2) * Math.PI / 180), 9))
                                     Case "tanh"
-                                        s2 = Convert.ToString(Math.Round(Math.Tanh(ConvertToDouble(s2) * Math.PI / 180), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Tanh(Convert.ToDouble(s2) * Math.PI / 180), 9))
                                     Case "arcsinh"
-                                        s2 = Convert.ToString(Math.Round(Math.Asinh(ConvertToDouble(s2)) * 180 / Math.PI, 9))
+                                        s2 = ConvertToString(Math.Round(Math.Asinh(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arccosh"
-                                        s2 = Convert.ToString(Math.Round(Math.Acosh(ConvertToDouble(s2)) * 180 / Math.PI, 9))
+                                        s2 = ConvertToString(Math.Round(Math.Acosh(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "arctanh"
-                                        s2 = Convert.ToString(Math.Round(Math.Atanh(ConvertToDouble(s2)) * 180 / Math.PI, 9))
+                                        s2 = ConvertToString(Math.Round(Math.Atanh(Convert.ToDouble(s2)) * 180 / Math.PI, 9))
                                     Case "sqrt"
-                                        s2 = Convert.ToString(Math.Round(ConvertToDouble(s2) ^ 0.5, 9))
+                                        s2 = ConvertToString(Math.Round(Convert.ToDouble(s2) ^ 0.5, 9))
                                     Case "ln"
-                                        s2 = Convert.ToString(Math.Round(Math.Log(ConvertToDouble(s2)), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Log(Convert.ToDouble(s2)), 9))
                                     Case "lg"
-                                        s2 = Convert.ToString(Math.Round(Math.Log(ConvertToDouble(s2)) / Math.Log(10), 9))
+                                        s2 = ConvertToString(Math.Round(Math.Log(Convert.ToDouble(s2)) / Math.Log(10), 9))
                                     Case "log"
                                         If s2.Contains(";") Then
-                                            s2 = Convert.ToString(Math.Round(Math.Log(ConvertToDouble(s2.Substring(s2.IndexOf(";") + 1))) / Math.Log(ConvertToDouble(s2.Substring(0, s2.IndexOf(";")))), 9))
+                                            s2 = ConvertToString(Math.Round(Math.Log(Convert.ToDouble(s2.Substring(s2.IndexOf(";") + 1))) / Math.Log(Convert.ToDouble(s2.Substring(0, s2.IndexOf(";")))), 9))
                                         Else
-                                            s2 = Convert.ToString(Math.Round(Math.Log(ConvertToDouble(s2)), 9))
+                                            s2 = ConvertToString(Math.Round(Math.Log(Convert.ToDouble(s2)), 9))
                                         End If
                                 End Select
                                 str = s1.Substring(0, s1.Length - f.Length) + s2 + s3
@@ -242,13 +251,13 @@ Public Class Form1
                         count += 1
                     ElseIf str(i) = "!" Then
                         count += 1
-                        c1d = ConvertToDouble(c1)
+                        c1d = Convert.ToDouble(c1)
                         s1 = str.Substring(0, start)
                         c2d = 1
                         For j As Integer = 1 To c1d
                             c2d = c2d * j
                         Next
-                        s2 = Convert.ToString(c2d)
+                        s2 = ConvertToString(c2d)
                         s3 = str.Substring(start + count)
                         str = s1 + s2 + s3
                         Exit For
@@ -284,10 +293,10 @@ Public Class Form1
                         Exit For
                     End If
                 Next
-                c1d = ConvertToDouble(c1)
-                c2d = ConvertToDouble(c2)
+                c1d = Convert.ToDouble(c1)
+                c2d = Convert.ToDouble(c2)
                 s1 = str.Substring(0, start)
-                s2 = Convert.ToString(Math.Round(c1d ^ c2d, 9))
+                s2 = ConvertToString(Math.Round(c1d ^ c2d, 9))
                 s3 = str.Substring(start + count)
                 str = s1 + s2 + s3
             End While
@@ -317,19 +326,18 @@ Public Class Form1
                         Exit For
                     End If
                 Next
-                c1d = ConvertToDouble(c1)
-                c2d = ConvertToDouble(c2)
+                c1d = Convert.ToDouble(c1)
+                c2d = Convert.ToDouble(c2)
                 s1 = str.Substring(0, start)
                 Select Case f
                     Case "*"
-                        s2 = Convert.ToString(Math.Round(c1d * c2d, 9))
+                        s2 = ConvertToString(Math.Round(c1d * c2d, 9))
                     Case "/"
-                        s2 = Convert.ToString(Math.Round(c1d / c2d, 9))
+                        s2 = ConvertToString(Math.Round(c1d / c2d, 9))
                 End Select
                 s3 = str.Substring(start + count)
                 str = s1 + s2 + s3
             End While
-
             While (str.Contains("+") Or str.Contains("-")) And (str.Substring(1).Contains("-") Or str.Substring(1).Contains("+")) And str.Length - str.Replace(";-", " ").Length < Math.Max(str.Length - str.Replace("-", "").Length, 1)
                 c1 = ""
                 c2 = ""
@@ -355,14 +363,14 @@ Public Class Form1
                         Exit For
                     End If
                 Next
-                c1d = ConvertToDouble(c1)
-                c2d = ConvertToDouble(c2)
+                c1d = Convert.ToDouble(c1)
+                c2d = Convert.ToDouble(c2)
                 s1 = str.Substring(0, start)
                 Select Case f
                     Case "+"
-                        s2 = Convert.ToString(Math.Round(c1d + c2d, 9))
+                        s2 = ConvertToString(Math.Round(c1d + c2d, 9))
                     Case "-"
-                        s2 = Convert.ToString(Math.Round(c1d - c2d, 9))
+                        s2 = ConvertToString(Math.Round(c1d - c2d, 9))
                 End Select
                 s3 = str.Substring(start + count)
                 str = s1 + s2 + s3
@@ -387,11 +395,9 @@ Public Class Form1
             MakeSaveData()
         End If
     End Sub
-
     Private Sub OpenButton_Click(sender As Object, e As EventArgs) Handles OpenButton.Click
         FunctionOpenFile()
     End Sub
-
     Function FunctionOpenFile()
         Dim OpenFile As New OpenFileDialog
         OpenFile.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -405,7 +411,6 @@ Public Class Form1
                 End If
             End If
             Dim TextFromFile As String = IO.File.ReadAllText(OpenFile.FileName)
-            TextFromFile.Replace(vbVerticalTab, vbCrLf)
             TextBoxIs.Text = TextFromFile
             OpenedFile = OpenFile.FileName
             Me.Text = "Calc > " + OpenedFile
@@ -415,11 +420,9 @@ Public Class Form1
             CanMissText = False
         End If
     End Function
-
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
         FunctionSaveFile()
     End Sub
-
     Function FunctionSaveFile()
         If OpenedFile = "" Then
             Dim SaveFile As New SaveFileDialog
@@ -435,7 +438,6 @@ Public Class Form1
         End If
         Return True
     End Function
-
     Function Save(path As String)
         Dim f As FileStream = File.Create(path)
         Dim filebytes As Byte() = New UTF8Encoding(True).GetBytes(TextBoxIs.Text)
@@ -446,7 +448,7 @@ Public Class Form1
         CanMissText = False
     End Function
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim args() As String = Environment.GetCommandLineArgs()
         Try
             TextBoxIs.Text = IO.File.ReadAllText(args(1))
@@ -464,13 +466,15 @@ Public Class Form1
         Me.LabelFont.Location = New System.Drawing.Point(FileCollection.Size.Width + HelpToolStripMenuItem.Size.Width, 0)
         Dim RectangleData = Me.RectangleToScreen(Me.ClientRectangle)
         TextBoxIs.Size = New Size(RectangleData.Width, RectangleData.Height - 32)
+        HelpTextBox.Size = New Size(RectangleData.Width, (RectangleData.Height) / 2)
     End Sub
 
-    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         Dim RectangleData = Me.RectangleToScreen(Me.ClientRectangle)
         TextBoxIs.Size = New Size(RectangleData.Width, RectangleData.Height - 32)
+        HelpTextBox.Size = New Size(RectangleData.Width, (RectangleData.Height) / 2)
+        HelpTextBox.Top = (RectangleData.Height) / 2
     End Sub
-
     Private Sub TextBoxIs_TextChanged(sender As Object, e As EventArgs) Handles TextBoxIs.TextChanged
         If Not LastOperationIsUndo Then
             Dim NewUndoItem As New UndoItem
@@ -518,7 +522,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+    Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
         If CanMissText Then
             Dim QuestionAboutDataMiss As DialogResult = MessageBox.Show("Do you want to save changes?", "Calc", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
             If QuestionAboutDataMiss = DialogResult.Cancel Then
@@ -532,8 +536,14 @@ Public Class Form1
     End Sub
 
     Private Sub HelpToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HelpToolStripMenuItem.Click
-        Dim hf = New HelpForm()
-        hf.Show()
+        Dim RectangleData = Me.RectangleToScreen(Me.ClientRectangle)
+        If HelpTextBox.Visible Then
+            HelpTextBox.Visible = False
+            TextBoxIs.Size = New Size(RectangleData.Width, RectangleData.Height - 32)
+        Else
+            HelpTextBox.Visible = True
+            TextBoxIs.Size = New Size(RectangleData.Width, (RectangleData.Height - 32) / 2)
+        End If
     End Sub
 
     Private Sub ToolStripComboBoxFont_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ToolStripComboBoxFont.SelectedIndexChanged

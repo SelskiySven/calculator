@@ -22,124 +22,141 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuStrip = New System.Windows.Forms.MenuStrip()
-        Me.FileCollection = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenButton = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveButton = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveAsButton = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripComboBoxFont = New System.Windows.Forms.ToolStripComboBox()
-        Me.LabelFont = New System.Windows.Forms.Label()
-        Me.TextBoxIs = New System.Windows.Forms.TextBox()
-        Me.MenuStrip.SuspendLayout()
-        Me.SuspendLayout()
-        '
-        'HelpToolStripMenuItem
-        '
-        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Padding = New System.Windows.Forms.Padding(0)
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(36, 32)
-        Me.HelpToolStripMenuItem.Text = "Help"
-        '
-        'MenuStrip
-        '
-        Me.MenuStrip.AutoSize = False
-        Me.MenuStrip.BackColor = System.Drawing.SystemColors.Control
-        Me.MenuStrip.GripMargin = New System.Windows.Forms.Padding(0)
-        Me.MenuStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileCollection, Me.HelpToolStripMenuItem, Me.ToolStripComboBoxFont})
-        Me.MenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
-        Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
-        Me.MenuStrip.Name = "MenuStrip"
-        Me.MenuStrip.Padding = New System.Windows.Forms.Padding(0)
-        Me.MenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-        Me.MenuStrip.Size = New System.Drawing.Size(784, 32)
-        Me.MenuStrip.TabIndex = 8
-        '
-        'FileCollection
-        '
-        Me.FileCollection.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenButton, Me.SaveButton, Me.SaveAsButton})
-        Me.FileCollection.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FileCollection.Name = "FileCollection"
-        Me.FileCollection.Padding = New System.Windows.Forms.Padding(0)
-        Me.FileCollection.Size = New System.Drawing.Size(29, 32)
-        Me.FileCollection.Text = "File"
-        '
-        'OpenButton
-        '
-        Me.OpenButton.Name = "OpenButton"
-        Me.OpenButton.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenButton.Size = New System.Drawing.Size(186, 22)
-        Me.OpenButton.Text = "Open "
-        '
-        'SaveButton
-        '
-        Me.SaveButton.Name = "SaveButton"
-        Me.SaveButton.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.SaveButton.Size = New System.Drawing.Size(186, 22)
-        Me.SaveButton.Text = "Save"
-        '
-        'SaveAsButton
-        '
-        Me.SaveAsButton.Name = "SaveAsButton"
-        Me.SaveAsButton.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
-            Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.SaveAsButton.Size = New System.Drawing.Size(186, 22)
-        Me.SaveAsButton.Text = "Save As"
-        '
-        'ToolStripComboBoxFont
-        '
-        Me.ToolStripComboBoxFont.Items.AddRange(New Object() {"5", "6", "7", "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36"})
-        Me.ToolStripComboBoxFont.Margin = New System.Windows.Forms.Padding(50, 0, 0, 0)
-        Me.ToolStripComboBoxFont.Name = "ToolStripComboBoxFont"
-        Me.ToolStripComboBoxFont.Size = New System.Drawing.Size(75, 32)
-        Me.ToolStripComboBoxFont.Text = "9"
-        '
-        'LabelFont
-        '
-        Me.LabelFont.Location = New System.Drawing.Point(63, 0)
-        Me.LabelFont.Margin = New System.Windows.Forms.Padding(0)
-        Me.LabelFont.Name = "LabelFont"
-        Me.LabelFont.Size = New System.Drawing.Size(50, 32)
-        Me.LabelFont.TabIndex = 9
-        Me.LabelFont.Text = "Font"
-        Me.LabelFont.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'TextBoxIs
-        '
-        Me.TextBoxIs.AcceptsTab = True
-        Me.TextBoxIs.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBoxIs.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TextBoxIs.Location = New System.Drawing.Point(0, 32)
-        Me.TextBoxIs.Margin = New System.Windows.Forms.Padding(0)
-        Me.TextBoxIs.MaxLength = 2147483647
-        Me.TextBoxIs.Multiline = True
-        Me.TextBoxIs.Name = "TextBoxIs"
-        Me.TextBoxIs.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBoxIs.Size = New System.Drawing.Size(784, 529)
-        Me.TextBoxIs.TabIndex = 1
-        Me.TextBoxIs.WordWrap = False
-        '
-        'Form1
-        '
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
-        Me.BackColor = System.Drawing.SystemColors.Control
-        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ClientSize = New System.Drawing.Size(784, 561)
-        Me.Controls.Add(Me.LabelFont)
-        Me.Controls.Add(Me.TextBoxIs)
-        Me.Controls.Add(Me.MenuStrip)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MainMenuStrip = Me.MenuStrip
-        Me.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
-        Me.Name = "Form1"
-        Me.Text = "Calc > Untitled"
-        Me.MenuStrip.ResumeLayout(False)
-        Me.MenuStrip.PerformLayout()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
-
+        Dim resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(Form1))
+        HelpToolStripMenuItem = New ToolStripMenuItem()
+        MenuStrip = New MenuStrip()
+        FileCollection = New ToolStripMenuItem()
+        OpenButton = New ToolStripMenuItem()
+        SaveButton = New ToolStripMenuItem()
+        SaveAsButton = New ToolStripMenuItem()
+        ToolStripComboBoxFont = New ToolStripComboBox()
+        LabelFont = New Label()
+        TextBoxIs = New TextBox()
+        HelpTextBox = New TextBox()
+        MenuStrip.SuspendLayout()
+        SuspendLayout()
+        ' 
+        ' HelpToolStripMenuItem
+        ' 
+        HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
+        HelpToolStripMenuItem.Padding = New Padding(0)
+        HelpToolStripMenuItem.Size = New Drawing.Size(36, 32)
+        HelpToolStripMenuItem.Text = "Help"
+        ' 
+        ' MenuStrip
+        ' 
+        MenuStrip.AutoSize = False
+        MenuStrip.BackColor = Drawing.SystemColors.Control
+        MenuStrip.GripMargin = New Padding(0)
+        MenuStrip.ImageScalingSize = New Drawing.Size(20, 20)
+        MenuStrip.Items.AddRange(New ToolStripItem() {FileCollection, HelpToolStripMenuItem, ToolStripComboBoxFont})
+        MenuStrip.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow
+        MenuStrip.Location = New Drawing.Point(0, 0)
+        MenuStrip.Name = "MenuStrip"
+        MenuStrip.Padding = New Padding(0)
+        MenuStrip.RenderMode = ToolStripRenderMode.Professional
+        MenuStrip.Size = New Drawing.Size(784, 32)
+        MenuStrip.TabIndex = 8
+        ' 
+        ' FileCollection
+        ' 
+        FileCollection.DropDownItems.AddRange(New ToolStripItem() {OpenButton, SaveButton, SaveAsButton})
+        FileCollection.Font = New Drawing.Font("Segoe UI", 9F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point)
+        FileCollection.Name = "FileCollection"
+        FileCollection.Padding = New Padding(0)
+        FileCollection.Size = New Drawing.Size(29, 32)
+        FileCollection.Text = "File"
+        ' 
+        ' OpenButton
+        ' 
+        OpenButton.Name = "OpenButton"
+        OpenButton.ShortcutKeys = Keys.Control Or Keys.O
+        OpenButton.Size = New Drawing.Size(186, 22)
+        OpenButton.Text = "Open "
+        ' 
+        ' SaveButton
+        ' 
+        SaveButton.Name = "SaveButton"
+        SaveButton.ShortcutKeys = Keys.Control Or Keys.S
+        SaveButton.Size = New Drawing.Size(186, 22)
+        SaveButton.Text = "Save"
+        ' 
+        ' SaveAsButton
+        ' 
+        SaveAsButton.Name = "SaveAsButton"
+        SaveAsButton.ShortcutKeys = Keys.Control Or Keys.Shift Or Keys.S
+        SaveAsButton.Size = New Drawing.Size(186, 22)
+        SaveAsButton.Text = "Save As"
+        ' 
+        ' ToolStripComboBoxFont
+        ' 
+        ToolStripComboBoxFont.Items.AddRange(New Object() {"5", "6", "7", "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36"})
+        ToolStripComboBoxFont.Margin = New Padding(50, 0, 0, 0)
+        ToolStripComboBoxFont.Name = "ToolStripComboBoxFont"
+        ToolStripComboBoxFont.Size = New Drawing.Size(75, 32)
+        ToolStripComboBoxFont.Text = "9"
+        ' 
+        ' LabelFont
+        ' 
+        LabelFont.Location = New Drawing.Point(63, 0)
+        LabelFont.Margin = New Padding(0)
+        LabelFont.Name = "LabelFont"
+        LabelFont.Size = New Drawing.Size(50, 32)
+        LabelFont.TabIndex = 9
+        LabelFont.Text = "Font"
+        LabelFont.TextAlign = Drawing.ContentAlignment.MiddleCenter
+        ' 
+        ' TextBoxIs
+        ' 
+        TextBoxIs.AcceptsTab = True
+        TextBoxIs.BackColor = Drawing.SystemColors.Window
+        TextBoxIs.BorderStyle = BorderStyle.None
+        TextBoxIs.Font = New Drawing.Font("Segoe UI", 9F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point)
+        TextBoxIs.Location = New Drawing.Point(0, 32)
+        TextBoxIs.Margin = New Padding(0)
+        TextBoxIs.MaxLength = Integer.MaxValue
+        TextBoxIs.Multiline = True
+        TextBoxIs.Name = "TextBoxIs"
+        TextBoxIs.ScrollBars = ScrollBars.Both
+        TextBoxIs.Size = New Drawing.Size(784, 529)
+        TextBoxIs.TabIndex = 1
+        TextBoxIs.WordWrap = False
+        ' 
+        ' HelpTextBox
+        ' 
+        HelpTextBox.BackColor = Drawing.SystemColors.Window
+        HelpTextBox.BorderStyle = BorderStyle.FixedSingle
+        HelpTextBox.Font = New Drawing.Font("Segoe UI", 12F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point)
+        HelpTextBox.Location = New Drawing.Point(0, 263)
+        HelpTextBox.Margin = New Padding(0)
+        HelpTextBox.Multiline = True
+        HelpTextBox.Name = "HelpTextBox"
+        HelpTextBox.ReadOnly = True
+        HelpTextBox.ScrollBars = ScrollBars.Both
+        HelpTextBox.Size = New Drawing.Size(784, 298)
+        HelpTextBox.TabIndex = 10
+        HelpTextBox.Text = resources.GetString("HelpTextBox.Text")
+        HelpTextBox.Visible = False
+        ' 
+        ' Form1
+        ' 
+        AutoScaleMode = AutoScaleMode.None
+        BackColor = Drawing.SystemColors.Control
+        BackgroundImageLayout = ImageLayout.None
+        ClientSize = New Drawing.Size(784, 561)
+        Controls.Add(HelpTextBox)
+        Controls.Add(LabelFont)
+        Controls.Add(TextBoxIs)
+        Controls.Add(MenuStrip)
+        Icon = CType(resources.GetObject("$this.Icon"), Drawing.Icon)
+        MainMenuStrip = MenuStrip
+        Margin = New Padding(1, 2, 1, 2)
+        Name = "Form1"
+        Text = "Calc > Untitled"
+        MenuStrip.ResumeLayout(False)
+        MenuStrip.PerformLayout()
+        ResumeLayout(False)
+        PerformLayout()
     End Sub
     Friend WithEvents MenuStrip As MenuStrip
     Friend WithEvents FileCollection As ToolStripMenuItem
@@ -150,4 +167,5 @@ Partial Class Form1
     Friend WithEvents TextBoxIs As TextBox
     Protected WithEvents LabelFont As Label
     Friend WithEvents ToolStripComboBoxFont As ToolStripComboBox
+    Friend WithEvents HelpTextBox As TextBox
 End Class
