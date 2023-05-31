@@ -132,13 +132,17 @@ Public Class Form1
         End If
     End Sub
 
-    Function ConvertToString(dbl As String)
+    Function ConvertToString(dbl As Double)
         Dim str As String
         str = Convert.ToString(dbl)
         If str.Contains("E") Then
             Dim EIndex As Integer = str.IndexOf("E")
             Dim power As Integer = Convert.ToInt32(str.Substring(EIndex + 2)) - 1
-            str = "0." + New String("0", power) + str.Substring(0, EIndex)
+            If str(0) = "-" Then
+                str = "-0." + New String("0", power) + str.Substring(1, EIndex - 1)
+            Else
+                str = "0." + New String("0", power) + str.Substring(0, EIndex)
+            End If
         End If
         Return str
     End Function
@@ -148,8 +152,8 @@ Public Class Form1
         Dim s1, s2, s3, f, c1, c2 As String
         Dim c1d, c2d As Double
 
-        Try
-            While str.Contains("(") Or str.Contains(")")
+        'Try
+        While str.Contains("(") Or str.Contains(")")
                 start = -1
                 count = 0
                 For i As Integer = 0 To str.Length - 1
@@ -381,9 +385,9 @@ Public Class Form1
                 End If
             Next
             Return str
-        Catch ex As Exception
-            Return ""
-        End Try
+        'Catch ex As Exception
+        'Return ""
+        'End Try
     End Function
 
     Private Sub SaveAsButton_Click(sender As Object, e As EventArgs) Handles SaveAsButton.Click
@@ -452,8 +456,8 @@ Public Class Form1
         Dim args() As String = Environment.GetCommandLineArgs()
         Try
             TextBoxIs.Text = IO.File.ReadAllText(args(1))
-            TextBoxIs.SelectionStart = 0
-            TextBoxIs.SelectionLength = 0
+                TextBoxIs.SelectionStart = 0
+                TextBoxIs.SelectionLength = 0
             OpenedFile = args(1)
             Me.Text = "Calc > " + OpenedFile
             UndoArray.Clear()
